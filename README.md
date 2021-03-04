@@ -1,6 +1,6 @@
 # test-tephi-imagehash
 
-[![Build Status](https://travis-ci.org/SciTools/test-tephi-imagehash.svg?branch=gh-pages)](https://travis-ci.org/SciTools/test-tephi-imagehash)
+[![Build Status](https://api.cirrus-ci.com/github/SciTools/test-tephi-imagehash.svg?branch=gh-pages)](https://cirrus-ci.com/github/SciTools/test-tephi-imagehash)
 
 A perceptual hash image store for graphical testing of [SciTools/tephi](https://github.com/SciTools/tephi).
 
