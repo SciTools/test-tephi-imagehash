@@ -19,10 +19,6 @@ env:
   CACHE_PERIOD: "2"
   # Increment the build number to force new conda cache upload.
   CONDA_CACHE_BUILD: "0"
-  # Increment the build number to force new nox cache upload.
-  NOX_CACHE_BUILD: "0"
-  # Increment the build number to force new pip cache upload.
-  PIP_CACHE_BUILD: "0"
 
 
 #
@@ -30,14 +26,7 @@ env:
 #
 test_task:
   auto_cancellation: true
-  matrix:
-    env:
-      PY_VER: "3.6"
-    env:
-      PY_VER: "3.7"
-    env:
-      PY_VER: "3.8"
-  name: "${CIRRUS_OS}: py${PY_VER} tests"
+  name: "${CIRRUS_OS}: image tests"
   container:
     image: gcc:latest
   env:
@@ -48,6 +37,7 @@ test_task:
       - wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
       - echo "${CIRRUS_OS} $(sha256sum miniconda.sh)"
       - echo "$(date +%Y).$(expr $(date +%U) / ${CACHE_PERIOD}):${CONDA_CACHE_BUILD}"
+      - echo "$(sha256sum requirements.txt)"
     populate_script:
       - bash miniconda.sh -b -p ${HOME}/miniconda
       - conda config --set always_yes yes --set changeps1 no
