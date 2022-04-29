@@ -9,19 +9,23 @@ import image_manifest
 
 
 _HASH_SIZE = 16
+# Ideally, a hamming distance of 2 is typically sufficient. However,
+# we're relaxing this to 4 to accommodate the migration in behaviour
+# of unpinning pillow<7.
+_HAMMING_DISTANCE = 4
 
 
 class TestHash(unittest.TestCase):
     def test(self):
-        self.maxDiff = None
         exceptions = []
         for fname in glob.glob("images/*.png"):
             phash = imagehash.phash(Image.open(fname), hash_size=_HASH_SIZE)
             fname_base = os.path.basename(fname)
-            fname_hash = os.path.splitext(fname_base)[0]
-            if str(phash) != fname_hash:
-                msg = 'Calculated phash {} does not match filename {!r}.'
-                exceptions.append(ValueError(msg.format(str(phash), fname_base)))
+            fname_hash = imagehash.hex_to_hash(os.path.splitext(fname_base)[0])
+            hamming = fname_hash - phash
+            if hamming > _HAMMING_DISTANCE:
+                msg = 'phash {} does not match {!r} [hamming={}].'
+                exceptions.append(ValueError(msg.format(str(phash), fname_base, hamming)))
         self.assertEqual([], exceptions)
 
 
