@@ -1,5 +1,4 @@
-import glob
-import os
+from pathlib import Path
 import unittest
 
 from PIL import Image
@@ -18,14 +17,13 @@ _HAMMING_DISTANCE = 4
 class TestHash(unittest.TestCase):
     def test(self):
         exceptions = []
-        for fname in glob.glob("images/*.png"):
+        for fname in Path(".").glob("images/*.png"):
             phash = imagehash.phash(Image.open(fname), hash_size=_HASH_SIZE)
-            fname_base = os.path.basename(fname)
-            fname_hash = imagehash.hex_to_hash(os.path.splitext(fname_base)[0])
+            fname_hash = imagehash.hex_to_hash(fname.stem)
             hamming = fname_hash - phash
             if hamming > _HAMMING_DISTANCE:
-                msg = 'phash {} does not match {!r} [hamming={}].'
-                exceptions.append(ValueError(msg.format(str(phash), fname_base, hamming)))
+                msg = f'phash {phash} does not match {fname.name} [{hamming=}].'
+                exceptions.append(ValueError(msg))
         self.assertEqual([], exceptions)
 
 
