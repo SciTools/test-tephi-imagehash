@@ -1,4 +1,4 @@
-# test-tephi-imagehash
+# test-tephi-imagehash 
 
 [![Build Status](https://api.cirrus-ci.com/github/SciTools/test-tephi-imagehash.svg?branch=gh-pages)](https://cirrus-ci.com/github/SciTools/test-tephi-imagehash)
 
